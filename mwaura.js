@@ -2,6 +2,7 @@ const rock = document.getElementById("rock");
 const paper = document.getElementById("paper");
 const scissors = document.getElementById("scissors");
 const reset = document.getElementById("reset");
+const autoPlay = document.getElementById('autoPlay');
 let scores = JSON.parse(localStorage.getItem("score")) || {
   wins: 0,
   losses: 0,
@@ -33,6 +34,25 @@ reset.onclick = function(){
   localStorage.removeItem("score");
 }
 
+let isAutoPlaying = false;
+let intervalId;
+
+autoPlay.onclick = function(){
+  if(!isAutoPlaying){
+    intervalId = setInterval(function(){
+    let playerChoice = computerMove();
+    let cpu = computerMove();
+
+    result(playerChoice, cpu, scores);
+  }, 1000);
+  isAutoPlaying = true;
+  }
+  else{
+    clearInterval(intervalId);
+    isAutoPlaying = false;
+  }
+}
+
 function computerMove(){
   let randomNumber = Math.floor(Math.random() * 3) + 1;
   let compChoice = '';
@@ -45,7 +65,7 @@ function computerMove(){
   else{
     compChoice = 'scissors';
   }
-  return compChoice
+  return compChoice;
 }
 
 function result(userChoice, computerMove, score){
