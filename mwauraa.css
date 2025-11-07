@@ -50,3 +50,16 @@ p.title{
 .reset:active{
   background-color: rgb(118, 117, 117);
 }
+
+.autoPlay{
+  border: none;
+  font-size: 1em;
+  padding: 10px;
+  cursor: pointer;
+}
+.autoPlay:hover{
+  background-color: rgb(164, 163, 163);
+}
+.autoPlay:active{
+  background-color: rgb(118, 117, 117);
+}
