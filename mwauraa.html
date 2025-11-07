@@ -1,28 +1,131 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="mwauraa.css">
-  <title>Buttons</title>
-</head>
-<body>
-  <p class="title">Rock Paper Scissors</p>
+const rock = document.getElementById("rock");
+const paper = document.getElementById("paper");
+const scissors = document.getElementById("scissors");
+const reset = document.getElementById("reset");
+const autoPlay = document.getElementById('autoPlay');
+let scores = JSON.parse(localStorage.getItem("score")) || {
+  wins: 0,
+  losses: 0,
+  ties: 0
+}
 
-
-  <button class="move-button" id="rock"><img src="move img\rock-emoji.png" alt="rock-emoji" class="move-img"></button>
-
-
-  <button class="move-button" id="paper"><img src="move img\paper-emoji.png" alt="paper-emoji" class="move-img"></button>
-
-
-  <button class="move-button" id="scissors"><img src="move img\scissors-emoji.png" alt="scissors-emoji" class="move-img"></button>
+rock.onclick = function(){
+  let cpu = computerMove();
   
-  <p id="js-result" class="result"></p>
-  <p id="js-moves" class="js-moves">
-  </p>
-  <p id="rate">Wins: 0 Losses: 0 Ties: 0</p>
-  <button id="reset" class="reset">Reset Score</button>
-  <script src="mwaura.js"></script>
-</body>
-</html> 
+  result('rock', cpu, scores);
+}
+
+paper.onclick = function(){
+  let cpu = computerMove();
+  
+  result('paper', cpu, scores);
+}
+
+scissors.onclick = function(){
+  let cpu = computerMove();
+  
+  result('scissors', cpu, scores);
+}
+
+reset.onclick = function(){
+  scores.wins = 0;
+  scores.losses = 0;
+  scores.ties = 0;
+  localStorage.removeItem("score");
+}
+
+let isAutoPlaying = false;
+let intervalId;
+
+autoPlay.onclick = function(){
+  if(!isAutoPlaying){
+    intervalId = setInterval(function(){
+    let playerChoice = computerMove();
+    let cpu = computerMove();
+
+    result(playerChoice, cpu, scores);
+  }, 1000);
+  isAutoPlaying = true;
+  }
+  else{
+    clearInterval(intervalId);
+    isAutoPlaying = false;
+  }
+}
+
+function computerMove(){
+  let randomNumber = Math.floor(Math.random() * 3) + 1;
+  let compChoice = '';
+  if(randomNumber === 1){
+    compChoice = 'rock';
+  }
+  else if(randomNumber === 2){
+    compChoice = 'paper';
+  }
+  else{
+    compChoice = 'scissors';
+  }
+  return compChoice;
+}
+
+function result(userChoice, computerMove, score){
+  let outcome = '';
+  if(userChoice === 'rock'){
+    if(computerMove === 'rock'){
+      outcome = 'Tie';
+    }
+
+    else if(computerMove === 'paper'){
+      outcome = 'You Lose'; 
+    }
+
+    else{
+      outcome = 'You Win';
+    }
+  }
+
+  else if(userChoice === 'paper'){
+    if(computerMove === 'rock'){
+      outcome = 'You Win';
+    }
+
+    else if(computerMove === 'paper'){
+      outcome = 'Tie'; 
+    }
+
+    else{
+      outcome = 'You Lose';
+    }
+  }
+
+  else{
+    if(computerMove === 'rock'){
+      outcome = 'You Lose';
+    }
+
+    else if(computerMove === 'paper'){
+      outcome = 'You Win'; 
+    }
+
+    else{
+      outcome = 'Tie';
+    }
+  }
+
+  if(outcome === 'You Win'){
+    scores.wins++;
+  }
+  else if(outcome === 'You Lose'){
+    scores.losses++;
+  }
+  else{
+    scores.ties++;
+  }
+
+  localStorage.setItem('score',JSON.stringify(scores));
+
+  document.getElementById("js-result").innerHTML = outcome;
+  document.getElementById("js-moves").innerHTML = `You <img src="move img/${userChoice}-emoji.png" alt="${userChoice}" class="move-img">
+    <img src="move img/${computerMove}-emoji.png" alt="${computerMove}" class="move-img"> computer`
+  document.getElementById("rate").innerHTML = `Wins: ${scores.wins}, Losses: ${scores.losses}, Ties: ${scores.ties}`;
+}
