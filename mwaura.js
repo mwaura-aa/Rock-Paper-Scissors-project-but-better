@@ -53,6 +53,24 @@ autoPlay.onclick = () => {
   }
 }
 
+document.body.addEventListener('keydown', () => {
+  if(event.key === 'r'){
+    let cpu = computerMove();
+    
+    result('rock', cpu, scores);
+  }
+  else if(event.key === 'p'){
+    let cpu = computerMove();
+    
+    result('paper', cpu, scores)
+  };
+  else if(event.key === 's'){
+    let cpu = computerMove();
+    
+    result('scissors', cpu, scores);
+  };
+});
+
 function computerMove(){
   let randomNumber = Math.floor(Math.random() * 3) + 1;
   let compChoice = '';
@@ -129,4 +147,5 @@ function result(userChoice, computerMove, score){
     <img src="move img/${computerMove}-emoji.png" alt="${computerMove}" class="move-img"> computer`
   document.getElementById("rate").innerHTML = `Wins: ${scores.wins}, Losses: ${scores.losses}, Ties: ${scores.ties}`;
 }
+
 
