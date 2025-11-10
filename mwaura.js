@@ -9,25 +9,25 @@ let scores = JSON.parse(localStorage.getItem("score")) || {
   ties: 0
 }
 
-rock.onclick = function(){
+rock.onclick = () => {
   let cpu = computerMove();
   
   result('rock', cpu, scores);
 }
 
-paper.onclick = function(){
+paper.onclick = () => {
   let cpu = computerMove();
   
   result('paper', cpu, scores);
 }
 
-scissors.onclick = function(){
+scissors.onclick = () => {
   let cpu = computerMove();
   
   result('scissors', cpu, scores);
 }
 
-reset.onclick = function(){
+reset.onclick = () => {
   scores.wins = 0;
   scores.losses = 0;
   scores.ties = 0;
@@ -37,9 +37,9 @@ reset.onclick = function(){
 let isAutoPlaying = false;
 let intervalId;
 
-autoPlay.onclick = function(){
+autoPlay.onclick = () => {
   if(!isAutoPlaying){
-    intervalId = setInterval(function(){
+    intervalId = setInterval(() => {
     let playerChoice = computerMove();
     let cpu = computerMove();
 
@@ -129,3 +129,4 @@ function result(userChoice, computerMove, score){
     <img src="move img/${computerMove}-emoji.png" alt="${computerMove}" class="move-img"> computer`
   document.getElementById("rate").innerHTML = `Wins: ${scores.wins}, Losses: ${scores.losses}, Ties: ${scores.ties}`;
 }
+
